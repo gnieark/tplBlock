@@ -78,7 +78,7 @@ class TplBlock {
         '/' . self::blockStartStart . preg_quote($prefix . $blocName) . self::blockStartEnd .
           '(.*?)'.
           self::blockEndStart . preg_quote($prefix . $blocName). self::blockEndEnd. 
-        '/is',
+          '/is',
         function($m) use($blocName,$blocsArr,$prefix, $trim) {
           $out = "";
           foreach($blocsArr as $bloc){
@@ -86,13 +86,14 @@ class TplBlock {
             $out.=$bloc->apply_tpl_str( $m[1] , $prefix . $blocName , $trim );
           }
           return $out;
-        }
-        ,$str
+        },
+        $str
       );
     }
 
     //delete unused blocs
-    //to do
+    // TODO
+
 
     if($trim){
       return trim($str,"\n");
