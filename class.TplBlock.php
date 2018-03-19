@@ -20,7 +20,7 @@ class TplBlock {
   * Input object name
   */
 
-  public function __construct(STRING $name =""){
+  public function __construct($name = NULL){
     $this->name = $name;
   }
 
@@ -34,7 +34,7 @@ class TplBlock {
   }
 
   public function add_sub_block(TplBlock $bloc){
-    if(empty($bloc->name)){
+    if(is_null($bloc->name) || empty($bloc->name)){
       throw new InvalidTemplateException("A sub tpl bloc can't have an empty name");
       return false;
     }
@@ -59,9 +59,9 @@ class TplBlock {
 
     foreach($this->subBlocs as $blocName => $blocsArr){
       $str = preg_replace_callback(
-        '/' . self::blockStartStart . preg_quote($blocName) . self::blockStartEnd .
+        '/' . self::blockStartStart . preg_quote($prefix . $blocName) . self::blockStartEnd .
           '(.*?)'.
-          self::blockEndStart . preg_quote($blocName). self::blockEndEnd. 
+          self::blockEndStart . preg_quote($prefix . $blocName). self::blockEndEnd. 
         '/is',
         function($m) use($blocName,$blocsArr,$prefix) {
           $out = "";
