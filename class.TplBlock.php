@@ -72,8 +72,7 @@ class TplBlock {
                            $str);
     }
     
-    //Isolate blocs
-
+    //parse blocs
     foreach($this->subBlocs as $blocName => $blocsArr){
       $str = preg_replace_callback(
         '/' . self::blockStartStart . preg_quote($prefix . $blocName) . self::blockStartEnd .
@@ -81,9 +80,9 @@ class TplBlock {
           self::blockEndStart . preg_quote($prefix . $blocName). self::blockEndEnd. 
         '/is',
         function($m) use($blocName,$blocsArr,$prefix, $trim) {
-          echo gettype($trim).$trim;
           $out = "";
           foreach($blocsArr as $bloc){
+            //recursion
             $out.=$bloc->apply_tpl_str( $m[1] , $prefix . $blocName , $trim );
           }
           return $out;
@@ -91,6 +90,9 @@ class TplBlock {
         ,$str
       );
     }
+
+    //delete unused blocs
+    //to do
 
     if($trim){
       return trim($str,"\n");
