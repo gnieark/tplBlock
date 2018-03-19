@@ -1,5 +1,7 @@
 # tplBlock
 
+[![Build Status](https://travis-ci.org/gnieark/tplBlock.svg?branch=master)](https://travis-ci.org/gnieark/tplBlock)
+
 It's a work in progress repo. Class is not usable for now.
 
 I don't want to use templating class containing deprecated functions.
