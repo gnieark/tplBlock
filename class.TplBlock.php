@@ -20,6 +20,7 @@ class TplBlock {
   public $name = '';
   private $vars = array();
   private $subBlocs = array();
+  private $unusedRegex = "";
 
   /*
   * Initialise TplBlock
@@ -29,6 +30,18 @@ class TplBlock {
 
   public function __construct($name = NULL){
     $this->name = $name;
+
+    $this->unusedRegex = '/'
+                       . self::blockStartStart
+                       . ' *([a-z][a-z.]*) *'
+                       . self::blockStartEnd
+                       . '(.*?)'
+                       . self::blockEndStart
+                       . ' *\1 *'
+                       . self::blockEndEnd
+                       . '/is'
+                       ;
+
   }
 
   /*
@@ -50,6 +63,18 @@ class TplBlock {
       return false;
     }
     $this->subBlocs[$bloc->name][] = $bloc;
+  }
+
+  private function subBlockRegex($prefix, $blocName) {
+    return '/'
+         . self::blockStartStart
+         . preg_quote($prefix . $blocName)
+         . self::blockStartEnd
+         . '(.*?)'
+         . self::blockEndStart
+         . preg_quote($prefix . $blocName)
+         . self::blockEndEnd
+         . '/is';
   }
 
   /*
@@ -75,10 +100,7 @@ class TplBlock {
     //parse blocs
     foreach($this->subBlocs as $blocName => $blocsArr){
       $str = preg_replace_callback(
-        '/' . self::blockStartStart . preg_quote($prefix . $blocName) . self::blockStartEnd .
-          '(.*?)'.
-          self::blockEndStart . preg_quote($prefix . $blocName). self::blockEndEnd. 
-          '/is',
+        $this->subBlockRegex($prefix, $blocName),
         function($m) use($blocName,$blocsArr,$prefix, $trim) {
           $out = "";
           foreach($blocsArr as $bloc){
@@ -86,14 +108,13 @@ class TplBlock {
             $out.=$bloc->apply_tpl_str( $m[1] , $prefix . $blocName , $trim );
           }
           return $out;
-        },
-        $str
+        }
+        ,$str
       );
     }
 
-    //delete unused blocs
-    // TODO
-
+    // Delete unused blocs
+    $str = preg_replace($this->unusedRegex, "", $str);
 
     if($trim){
       return trim($str,"\n");
