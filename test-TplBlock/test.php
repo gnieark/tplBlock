@@ -44,4 +44,4 @@ for ($i = 2; $i < 121; $i++){
 
 
 
-echo $tpl->apply_tpl_file("tpl.txt");
+echo $tpl->apply_tpl_file("sample.txt",false);

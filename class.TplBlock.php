@@ -65,12 +65,15 @@ class TplBlock {
     $this->subBlocs[$bloc->name][] = $bloc;
   }
 
-  private function subBlockRegex($prefix, $blocName) {
+  private function subBlockRegex($prefix, $blocName,$trim = true) {
+      echo "t".$trim;
     return '/'
          . self::blockStartStart
          . preg_quote($prefix . $blocName)
          . self::blockStartEnd
+         . (($trim === false)? '' : '(?:\R|)?' )
          . '(.*?)'
+         . (($trim === false)?  '' : '(?:\R|)?' )
          . self::blockEndStart
          . preg_quote($prefix . $blocName)
          . self::blockEndEnd
@@ -78,7 +81,8 @@ class TplBlock {
   }
 
   /*
-  * Shake template and input vars and returns the text
+  * Shake the template string and input vars 
+  * Then returns the parsed text
   * Input: 
   *   $str String containing the template to parse
   *   $subBlocsPath String optional, for this class internal use. The path like "bloc.subbloc"
@@ -100,7 +104,7 @@ class TplBlock {
     //parse blocs
     foreach($this->subBlocs as $blocName => $blocsArr){
       $str = preg_replace_callback(
-        $this->subBlockRegex($prefix, $blocName),
+        $this->subBlockRegex($prefix, $blocName, $trim),
         function($m) use($blocName,$blocsArr,$prefix, $trim) {
           $out = "";
           foreach($blocsArr as $bloc){
@@ -115,12 +119,8 @@ class TplBlock {
 
     // Delete unused blocs
     $str = preg_replace($this->unusedRegex, "", $str);
-
-    if($trim){
-      return trim($str,"\n");
-    }else{
-      return $str;
-    }
+    return $str;
+    
   }
 
   /*
