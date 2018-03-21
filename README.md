@@ -23,7 +23,7 @@ This simple template file:
 </html>
 ```
 
-Parsed with this code
+Parsed with this code:
 
 ```php
 <?php
