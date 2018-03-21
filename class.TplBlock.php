@@ -31,9 +31,13 @@ class TplBlock {
   public function __construct($name = NULL){
     $this->name = $name;
 
+    if(!is_null($name) && !ctype_alnum($name)){
+      throw new InvalidTemplateException("Only alpha-numerics chars are allowed on the block name");
+      return false;
+    }
     $this->unusedRegex = '/'
                        . self::blockStartStart
-                       . ' *([a-z][a-z.]*) *'
+                       . ' *([a-z][a-z0-9.]*) *'
                        . self::blockStartEnd
                        . '(.*?)'
                        . self::blockEndStart
@@ -66,7 +70,6 @@ class TplBlock {
   }
 
   private function subBlockRegex($prefix, $blocName,$trim = true) {
-      echo "t".$trim;
     return '/'
          . self::blockStartStart
          . preg_quote($prefix . $blocName)

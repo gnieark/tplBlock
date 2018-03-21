@@ -34,6 +34,7 @@ class TplBlockTest extends TestCase{
             )
           );
           $this->assertEquals("Hello Gnieark", $tpl->apply_tpl_file("temp.txt"));
+          unlink("temp.txt");
     }
 
     //test blocs
@@ -54,5 +55,22 @@ class TplBlockTest extends TestCase{
         $this->assertContains('have',$str);
         $this->assertFalse(strpos("WONT",$str));
     }
+
+    //test if error on blocks names WTF
+    /**
+      * @expectedException InvalidTemplateException
+      */
+    public function testIfErrorOnForbiddenName(){
+        $tpl = new TplBlock("kjsd54 65");
+    }
+
+    //test if error on blocks names WTF
+    /**
+      * @expectedException InvalidTemplateException
+      */
+    public function testIfErrorOnForbiddenNameAgain(){
+        $tpl = new TplBlock("kjsd54.5");
+    }
+
 
 }
