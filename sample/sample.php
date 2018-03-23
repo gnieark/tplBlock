@@ -1,47 +1,77 @@
 <?php
+/**
+ * Gnieark’s TplBlock sample.
+ *
+ * PHP version 5
+ *
+ * @category Template
+ * @package  TplBlock
+ * @author   gnieark <gnieark@tinad.fr>
+ * @license  GNU General Public License V3
+ * @link     https://github.com/gnieark/tplBlock/
+ */
+require_once "../vendor/autoload.php";
 
-include("../class.TplBlock.php");
+use TplBlock\TplBlock;
 
-$tpl = new TplBlock();
+const PRIMES = [ 1, 2, 3, 5, 7, 11 ];
 
-//simples vars
-
-$tpl->add_vars(array(
-    "name" => "Gnieark",
-    "title" => "Monsieur",
-    "firstname" => "Grouik"
-    )
-  );
-
-$primes = array(1,2,3,5,7,11);
-
-// a sub bloc
-foreach($primes as $prime){
-  $tplPrime = new TplBlock('primes');
-  $tplPrime->add_vars(array('number'  => $prime));
-  $tpl->add_sub_block($tplPrime);
-}
-
-// test sub - sub blocs
-for ($i = 2; $i < 121; $i++){
-    
-    $tplNumber = new TplBlock('number');
-    $tplNumber->add_vars( array("value" => $i));
-    $index = 1;
-    $number = $i;
-    while ( $number > 1 && $index < count($primes)){
-        if($number % $primes[$index] == 0){
-            $number = $number / $primes[$index];
-            $tplDivisor = new TplBlock("divisor");
-            $tplDivisor->add_vars( array("value" => $primes[$index]));
-            $tplNumber->add_sub_block($tplDivisor);
-        }else{
+/**
+ * Find divisors of a number.
+ *
+ * It works as long as the number is less than the last PRIMES number squared.
+ *
+ * @param int $number The number to find divisors for.
+ *
+ * @return array An array of divisors.
+ */
+function findDivisors(int $number)
+{
+    $divisors = [];
+    $index    = 1;
+    while ($number > 1 and $index < count(PRIMES)) {
+        if ($number % PRIMES[$index] != 0) {
             $index++;
+            continue;
         }
+        
+        $number     = $number / PRIMES[$index];
+        $divisors[] = PRIMES[$index];
     }
-    $tpl->add_sub_block($tplNumber);
+
+    return $divisors;
 }
 
+$variables = [
+    "name"      => "Gnieark",
+    "title"     => "Monsieur",
+    "firstname" => "Grouik",
+];
 
+// Simples vars.
+$template = (new TplBlock())->addVars($variables);
 
-echo $tpl->apply_tpl_file("tpl.txt");
+// A sub bloc.
+foreach (PRIMES as $prime) {
+    $template->addSubBlock(
+        (new TplBlock("primes"))->addVars([ "number" => $prime ])
+    );
+}
+
+// Find highest number for which we can find divisors.
+$lastNumber = pow(PRIMES[count(PRIMES) - 1], 2);
+
+// Test sub - sub blocs.
+for ($i = 2; $i <= $lastNumber; $i++) {
+    $templateNumber = (new TplBlock("number"))->addVars([ "value" => $i ]);
+
+    foreach (findDivisors($i) as $divisor) {
+        $templateNumber->addSubBlock(
+            (new TplBlock("divisor"))->addVars([ "value" => $divisor ])
+        );
+    }
+
+    $template->addSubBlock($templateNumber);
+}
+
+echo $template->applyTplFile("tpl.txt");

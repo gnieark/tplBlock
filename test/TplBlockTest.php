@@ -1,45 +1,102 @@
-
 <?php
+/**
+ * Gnieark’s TplBlock unit tests.
+ *
+ * PHP version 5
+ *
+ * @category Template
+ * @package  TplBlock
+ * @author   gnieark <gnieark@tinad.fr>
+ * @license  GNU General Public License V3
+ * @link     https://github.com/gnieark/tplBlock/
+ */
+namespace TplBlockTest;
+
 use PHPUnit\Framework\TestCase;
-require_once __DIR__.'/../class.TplBlock.php';
+use TplBlock\TplBlock;
 
-class TplBlockTest extends TestCase{
+/**
+ * The TplBlockTest class.
+ *
+ * @category Template
+ * @package  TplBlock
+ * @author   gnieark <gnieark@tinad.fr>
+ * @license  GNU General Public License V3
+ * @link     https://github.com/gnieark/tplBlock/
+ */
+class TplBlockTest extends TestCase
+{
     /**
-      * @expectedException InvalidTemplateException
-      */
-    public function testSendEmptyNameOnSubFunction(){
-        $tpl = new TplBlock();
-        $subTpl = new TplBlock();
-        $tpl->add_sub_block($subTpl);    
+     * A template cannot accept a sub template with no name.
+     *
+     * @return void
+     *
+     * @expectedException UnexpectedValueException
+     */
+    public function testSendEmptyNameOnSubFunction()
+    {
+        $template    = new TplBlock();
+        $subTemplate = new TplBlock();
+
+        $template->addSubBlock($subTemplate);
     }
 
-    public function testsimpleVar(){
-        $tpl = new TplBlock();
-        $tpl->add_vars(array(
-            "name" => "Gnieark",
-            "title" => "Monsieur",
-            "firstname" => "Grouik"
-            )
-          );
-        $this->assertEquals("Hello Gnieark", $tpl->apply_tpl_str("Hello {{name}}"));    
-    }
-    //test from a file
-    public function testParseFromFile(){
-        file_put_contents("temp.txt","Hello {{name}}");
-        $tpl = new TplBlock();
-        $tpl->add_vars(array(
-            "name" => "Gnieark",
-            "title" => "Monsieur",
-            "firstname" => "Grouik"
-            )
-          );
-          $this->assertEquals("Hello Gnieark", $tpl->apply_tpl_file("temp.txt"));
-          unlink("temp.txt");
+    /**
+     * Verify that variable replacement takes place.
+     *
+     * @return void
+     */
+    public function testSimpleVar()
+    {
+        $template = new TplBlock();
+
+        $variables = [
+            "name"      => "Gnieark",
+            "title"     => "Monsieur",
+            "firstname" => "Grouik",
+        ];
+
+        $actual = $template
+            ->addVars($variables)
+            ->applyTplStr("Hello {{name}}");
+
+        $this->assertEquals("Hello Gnieark", $actual);
     }
 
-    //test blocs
-    public function testBlocs(){
-        $str = "
+    /**
+     * Test from a file.
+     *
+     * @return void
+     */
+    public function testParseFromFile()
+    {
+        file_put_contents("temp.txt", "Hello {{name}}");
+
+        $template = new TplBlock();
+
+        $variables = [
+            "name"      => "Gnieark",
+            "title"     => "Monsieur",
+            "firstname" => "Grouik",
+        ];
+
+        $actual = $template
+            ->addVars($variables)
+            ->applyTplFile("temp.txt");
+
+        $this->assertEquals("Hello Gnieark", $actual);
+
+        unlink("temp.txt");
+    }
+
+    /**
+     * Test blocs.
+     *
+     * @return void
+     */
+    public function testBlocs()
+    {
+        $model = "
             Bhah blah wpooie456
             <!-- BEGIN bloc -->
                 have to be shown
@@ -48,29 +105,38 @@ class TplBlockTest extends TestCase{
                 WONT to be shown
             <!-- END blocTwo -->
         ";
-        $tpl = new TplBlock();
-        $tpl2 = new TplBlock("bloc");
-        $tpl->add_sub_block($tpl2);
-        $str = $tpl->apply_tpl_str($str);
-        $this->assertContains('have',$str);
-        $this->assertFalse(strpos("WONT",$str));
+
+        $template = new TplBlock();
+
+        $actual = $template
+            ->addSubBlock(new TplBlock("bloc"))
+            ->applyTplStr($model);
+
+        $this->assertContains("have", $actual);
+        $this->assertFalse(strpos("WONT", $actual));
     }
 
-    //test if error on blocks names WTF
     /**
-      * @expectedException InvalidTemplateException
-      */
-    public function testIfErrorOnForbiddenName(){
-        $tpl = new TplBlock("kjsd54 65");
+     * Test if error on blocks names WTF.
+     *
+     * @return void
+     *
+     * @expectedException UnexpectedValueException
+     */
+    public function testIfErrorOnForbiddenName()
+    {
+        new TplBlock("kjsd54 65");
     }
 
-    //test if error on blocks names WTF
     /**
-      * @expectedException InvalidTemplateException
-      */
-    public function testIfErrorOnForbiddenNameAgain(){
-        $tpl = new TplBlock("kjsd54.5");
+     * Test if error on blocks names WTF.
+     *
+     * @return void
+     *
+     * @expectedException UnexpectedValueException
+     */
+    public function testIfErrorOnForbiddenNameAgain()
+    {
+        new TplBlock("kjsd54.5");
     }
-
-
 }
