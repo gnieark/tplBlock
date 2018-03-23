@@ -5,7 +5,5 @@ php:
   - '7.0'
   - hhvm # on Trusty only
   - nightly
-before_script:
-  - curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar
-script:
-- phpunit .
+before_script: composer update
+script: make test
