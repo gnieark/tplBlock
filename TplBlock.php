@@ -178,7 +178,7 @@ class TplBlock
      *
      * @return string The regex.
      */
-    private function subBlockRegex(string $prefix, string $blocName)
+    private function subBlockRegex($prefix, $blocName)
     {
         return '/'
              . self::BLOCKSTARTSTART
@@ -202,7 +202,7 @@ class TplBlock
      *
      * @return string The processed output.
      */
-    public function applyTplStr(string $str, string $subBlocsPath = "")
+    public function applyTplStr($str, $subBlocsPath = "")
     {
         // Replace all simple vars.
         $prefix = $subBlocsPath === "" ? "" : $subBlocsPath . ".";
@@ -248,7 +248,7 @@ class TplBlock
      *
      * @return string The processed output.
      */
-    public function applyTplFile(string $file)
+    public function applyTplFile($file)
     {
         if (! $tplStr = file_get_contents($file)) {
             throw new \UnexpectedValueException("Cannot read given file $file");
