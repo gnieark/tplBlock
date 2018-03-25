@@ -100,6 +100,13 @@ class TplBlock
      */
     private $trim = true;
 
+   /**
+     * Should we replace non set template vars by an empty string?
+     *
+     * @var boolean
+     */
+    private $replaceNonGivenVars = true;
+
     /**
      * Initialize TplBlock
      *
@@ -107,6 +114,7 @@ class TplBlock
      *
      * @param string $name The template name
      */
+     
     public function __construct($name = "")
     {
         // Checks that name is valid.
@@ -145,7 +153,6 @@ class TplBlock
     public function addVars(array $vars)
     {
         $this->vars = array_merge($this->vars, $vars);
-
         return $this;
     }
 
@@ -237,6 +244,11 @@ class TplBlock
 
         // Delete unused blocs.
         $str = preg_replace($this->unusedRegex, "", $str);
+        
+        //Replace non setted vars by empty string
+        if($this->replaceNonGivenVars) {
+          $str = preg_replace( "/" .self::STARTENCLOSURE .'([a-z][a-z0-9.]*)' .self::ENDENCLOSURE ."/", '', $str );
+        }
 
         return $str;
     }
@@ -265,7 +277,6 @@ class TplBlock
     public function doTrim()
     {
         $this->trim = true;
-
         return $this;
     }
 
@@ -277,7 +288,31 @@ class TplBlock
     public function dontTrim()
     {
         $this->trim = false;
-
         return $this;
     }
+    
+    /**
+     * Enable the behaviour: Non given vars will be replaced by an empty string.
+     *
+     * @return TplBlock For chaining.
+     */
+    public function doReplaceNonGivenVars()
+    {
+      $this->replaceNonGivenVars = true;
+      return $this;
+    
+    }
+    
+    /**
+     * Enable the behaviour: Non given vars will be replaced by an empty string.
+     *
+     * @return TplBlock For chaining.
+     */
+    public function dontReplaceNonGivenVars()
+    {
+      $this->replaceNonGivenVars = false;
+      return $this;
+    
+    }
+    
 }
