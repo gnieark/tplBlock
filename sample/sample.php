@@ -10,7 +10,7 @@
  * @license  GNU General Public License V3
  * @link     https://github.com/gnieark/tplBlock/
  */
-require_once "../vendor/autoload.php";
+require_once __DIR__."/../autoload.php";
 
 use TplBlock\TplBlock;
 
