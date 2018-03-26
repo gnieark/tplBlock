@@ -108,6 +108,12 @@ class TplBlock
     private $replaceNonGivenVars = true;
 
     /**
+     * Use strict mode?
+     * 
+     * @var boolean
+     */
+    private $strictMode = true;
+    /**
      * Initialize TplBlock
      *
      * The name can be empty only for the top one block.
@@ -201,6 +207,19 @@ class TplBlock
     }
 
     /**
+     * Make some tests to check template consistency.
+     * Return error message if needed, return 1 otherwise.
+     * 
+     * @param string $str the string to check
+     * @return string message
+     */
+    public function checkConsistency($str){
+
+
+        return 1;
+    }
+
+    /**
      * Shake the template string and input vars then returns the parsed text.
      *
      * @param string $str          containing the template to parse
@@ -211,6 +230,14 @@ class TplBlock
      */
     public function applyTplStr($str, $subBlocsPath = "")
     {
+        if($this->strictMode){
+            $consistency = self::checkConsistency($str);
+            if($consistency <> 1 ){
+                throw new \UnexpectedValueException($consistency);
+            }
+
+        }
+
         // Replace all simple vars.
         $prefix = $subBlocsPath === "" ? "" : $subBlocsPath . ".";
 
@@ -314,5 +341,28 @@ class TplBlock
       return $this;
     
     }
-    
+
+    /**
+     * Enable mode strict. If template is inconsistent, will throw an exception 
+     * and return nothing
+     * 
+     * @return TplBlock For chaining.
+     */
+    public function doStrictMode()
+    {
+        $this->strictMode = true;
+        return $this;
+    }
+
+    /**
+     * Disable mode strict. If template is inconsistent, will be parsed anyway.  
+     * and no errors will be returned.
+     * 
+     * @return TplBlock For chaining.
+     */
+    public function dontStrictMode(){
+        $this->strictMode = false;
+        return $this;
+
+    }
 }
