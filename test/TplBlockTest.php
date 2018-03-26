@@ -140,5 +140,21 @@ class TplBlockTest extends TestCase
         new TplBlock("kjsd54.5");
     }
     
+    public function testIfRemoveNonGivenVarsWorks(){
+        
+        $tpl = new TplBlock();
+        $resultWithReplace = $tpl
+        ->doReplaceNonGivenVars()
+        ->applyTplStr("Hello {{name}}");
 
+        $resultWithoutReplace = $tpl
+        ->dontReplaceNonGivenVars()
+        ->applyTplStr("Hello {{name}}");
+
+
+        $this->assertContains("name",$resultWithoutReplace);
+        $this->assertFalse(strpos("name", $resultWithReplace));
+    
+        
+    }
 }
