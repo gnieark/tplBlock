@@ -116,6 +116,33 @@ class TplBlockTest extends TestCase
         $this->assertFalse(strpos("WONT", $actual));
     }
 
+      /**
+     * Test blocs with tabs spaces etc..
+     *
+     * @return void
+     */
+    public function testBlocsWithsWeirdSpaces()
+    {
+        $model = "
+            Bhah blah wpooie456
+            <!-- BEGIN      bloc     -->
+                have to be shown
+            <!-- END     bloc                           -->
+            <!-- BEGIN                   blocTwo                -->
+                WONT to be shown
+            <!-- END                                blocTwo -->
+        ";
+
+        $template = new TplBlock();
+
+        $actual = $template
+            ->addSubBlock(new TplBlock("bloc"))
+            ->applyTplStr($model);
+
+        $this->assertContains("have", $actual);
+        $this->assertFalse(strpos("WONT", $actual));
+    }
+
     /**
      * Test if error on blocks names WTF.
      *

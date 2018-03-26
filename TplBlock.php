@@ -7,6 +7,7 @@
  * @category Template
  * @package  TplBlock
  * @author   gnieark <gnieark@tinad.fr>
+ * @link     https://blog-du-grouik.tinad.fr
  * @license  GNU General Public License V3
  * @link     https://github.com/gnieark/tplBlock/
  */
@@ -28,28 +29,28 @@ class TplBlock
      *
      * @var string
      */
-    const BLOCKSTARTSTART = '<!-- BEGIN ';
+    const BLOCKSTARTSTART = '<!--\s+BEGIN\s+';
 
     /**
      * The string ending a block start.
      *
      * @var string
      */
-    const BLOCKSTARTEND = ' -->';
+    const BLOCKSTARTEND = '\s+-->';
 
     /**
      * The string starting a block end.
      *
      * @var string
      */
-    const BLOCKENDSTART = '<!-- END ';
+    const BLOCKENDSTART = '<!--\s+END\s+';
 
     /**
      * The string ending a block end.
      *
      * @var string
      */
-    const BLOCKENDEND = ' -->';
+    const BLOCKENDEND = '\s+-->';
 
     /**
      * The string starting an enclosure.
@@ -107,6 +108,12 @@ class TplBlock
      */
     private $replaceNonGivenVars = true;
 
+    /**
+     * Use strict mode?
+     * 
+     * @var boolean
+     */
+    private $strictMode = true;
     /**
      * Initialize TplBlock
      *
@@ -201,6 +208,19 @@ class TplBlock
     }
 
     /**
+     * Make some tests to check template consistency.
+     * Return error message if needed, return 1 otherwise.
+     * 
+     * @param string $str the string to check
+     * @return string message
+     */
+    public function checkConsistency($str){
+        
+
+        return 1;
+    }
+
+    /**
      * Shake the template string and input vars then returns the parsed text.
      *
      * @param string $str          containing the template to parse
@@ -211,6 +231,14 @@ class TplBlock
      */
     public function applyTplStr($str, $subBlocsPath = "")
     {
+        if($this->strictMode){
+            $consistency = self::checkConsistency($str);
+            if($consistency <> 1 ){
+                throw new \UnexpectedValueException($consistency);
+            }
+
+        }
+
         // Replace all simple vars.
         $prefix = $subBlocsPath === "" ? "" : $subBlocsPath . ".";
 
@@ -314,5 +342,28 @@ class TplBlock
       return $this;
     
     }
-    
+
+    /**
+     * Enable mode strict. If template is inconsistent, will throw an exception 
+     * and return nothing
+     * 
+     * @return TplBlock For chaining.
+     */
+    public function doStrictMode()
+    {
+        $this->strictMode = true;
+        return $this;
+    }
+
+    /**
+     * Disable mode strict. If template is inconsistent, will be parsed anyway.  
+     * and no errors will be returned.
+     * 
+     * @return TplBlock For chaining.
+     */
+    public function dontStrictMode(){
+        $this->strictMode = false;
+        return $this;
+
+    }
 }
