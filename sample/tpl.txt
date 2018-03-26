@@ -1,9 +1,9 @@
 hello {{title}} {{name}} {{firstname}}
 
 The first primes numbers are:
-<!-- BEGIN primes -->
+<!--    BEGIN   primes    -->
   - {{primes.number}}
-<!-- END primes -->
+<!--   END          primes -->
 
 Lets list all divisors of:
 

@@ -7,6 +7,7 @@
  * @category Template
  * @package  TplBlock
  * @author   gnieark <gnieark@tinad.fr>
+ * @link     https://blog-du-grouik.tinad.fr
  * @license  GNU General Public License V3
  * @link     https://github.com/gnieark/tplBlock/
  */
@@ -28,28 +29,28 @@ class TplBlock
      *
      * @var string
      */
-    const BLOCKSTARTSTART = '<!-- BEGIN ';
+    const BLOCKSTARTSTART = '<!--\s+BEGIN\s+';
 
     /**
      * The string ending a block start.
      *
      * @var string
      */
-    const BLOCKSTARTEND = ' -->';
+    const BLOCKSTARTEND = '\s+-->';
 
     /**
      * The string starting a block end.
      *
      * @var string
      */
-    const BLOCKENDSTART = '<!-- END ';
+    const BLOCKENDSTART = '<!--\s+END\s+';
 
     /**
      * The string ending a block end.
      *
      * @var string
      */
-    const BLOCKENDEND = ' -->';
+    const BLOCKENDEND = '\s+-->';
 
     /**
      * The string starting an enclosure.
@@ -214,7 +215,7 @@ class TplBlock
      * @return string message
      */
     public function checkConsistency($str){
-
+        
 
         return 1;
     }

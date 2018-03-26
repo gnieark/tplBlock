@@ -1,0 +1,10 @@
+/.buildpath
+/.project
+/.settings
+/.metadata
+/.externalToolBuilders
+/.idea
+/composer.phar
+/nbproject/private
+/nbproject
+/vendor
