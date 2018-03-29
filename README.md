@@ -85,8 +85,4 @@ I wrote this class for use it on others personnals projects. It's really simple.
 
 If a block ( <--BEGIN .... )is in the template, but is not called, it will be deleted.
 
-Methods apply_tpl_file and apply_tpl_str have for second (optional) parameters a bolean. (true if not given).
-If true, the potentials carriage returns just after the BEGIN and just before the END are deleted.
-
-
 For now, class is permissive. I'll improve it to manage templating errors.
