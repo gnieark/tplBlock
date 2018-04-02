@@ -208,19 +208,6 @@ class TplBlock
     }
 
     /**
-     * Make some tests to check template consistency.
-     * Return error message if needed, return 1 otherwise.
-     * 
-     * @param string $str the string to check
-     * @return string message
-     */
-    public function checkConsistency($str){
-        
-
-        return 1;
-    }
-
-    /**
      * Shake the template string and input vars then returns the parsed text.
      *
      * @param string $str          containing the template to parse
@@ -231,14 +218,6 @@ class TplBlock
      */
     public function applyTplStr($str, $subBlocsPath = "")
     {
-        if($this->strictMode){
-            $consistency = self::checkConsistency($str);
-            if($consistency <> 1 ){
-                throw new \UnexpectedValueException($consistency);
-            }
-
-        }
-
         // Replace all simple vars.
         $prefix = $subBlocsPath === "" ? "" : $subBlocsPath . ".";
 
@@ -278,6 +257,17 @@ class TplBlock
           $str = preg_replace( "/" .self::STARTENCLOSURE .'([a-z][a-z0-9.]*)' .self::ENDENCLOSURE ."/", '', $str );
         }
 
+        
+        //check if loops patterns are still presents
+        if (($this->strictMode)
+            && (
+                   preg_match(  "/".self::BLOCKSTARTSTART."/", $str)
+                || preg_match( "/".self::BLOCKENDSTART."/", $str)
+            )
+        ){
+                throw new \UnexpectedValueException("Template string not consistent");
+            
+        }
         return $str;
     }
 
