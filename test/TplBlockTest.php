@@ -184,4 +184,36 @@ class TplBlockTest extends TestCase
     
         
     }
+    /**
+     * Test if error on non consistent tpl.
+     * @expectedException UnexpectedValueException
+     */
+    public function testNonConsistentTemplate(){
+        $str = "
+        Bhah blah wpooie456
+        <!-- BEGIN bloc -->
+            have to be shown
+        <!-- BEGIN blocTwo -->
+            SHOULD be shown
+        <!-- END bloc -->
+            WONT to be shown
+        <!-- END blocTwo -->";
+        $tpl = new TplBlock();
+        $tpl->applyTplStr($str);
+    }
+    public function testNonConsistentTemplateNonStrictMode(){
+        $str = "
+        Bhah blah wpooie456
+        <!-- BEGIN bloc -->
+            have to be shown
+        <!-- BEGIN blocTwo -->
+            SHOULD be shown
+        <!-- END bloc -->
+            WONT to be shown
+        <!-- END blocTwo -->";
+        $tpl = new TplBlock();
+        $tpl-> dontStrictMode();
+        $this->assertContains("wpooie456",$tpl-> applyTplStr($str));
+
+    }
 }
