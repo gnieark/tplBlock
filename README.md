@@ -27,7 +27,7 @@ Parsed with this code:
 
 ```php
 <?php
-require_once ("path/class.TplBlock.php");
+require_once ("path/TplBlock.php");
 
 //init object
 $tpl = new TplBlock();
@@ -86,3 +86,11 @@ I wrote this class for use it on others personnals projects. It's really simple.
 If a block ( <--BEGIN .... )is in the template, but is not called, it will be deleted.
 
 For now, class is permissive. I'll improve it to manage templating errors.
+
+# Install
+
+Use composer etc... or simply put the file TplBlock.php on your project https://raw.githubusercontent.com/gnieark/tplBlock/master/TplBlock.php
+
+# Documentation
+
+See the comments on the TplBlock.php file.
