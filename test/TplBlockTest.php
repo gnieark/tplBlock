@@ -10,10 +10,8 @@
  * @license  GNU General Public License V3
  * @link     https://github.com/gnieark/tplBlock/
  */
-namespace TplBlockTest;
 
 use PHPUnit\Framework\TestCase;
-use TplBlock\TplBlock;
 
 /**
  * The TplBlockTest class.

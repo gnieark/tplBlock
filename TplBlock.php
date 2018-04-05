@@ -1,17 +1,4 @@
 <?php
-/**
- * Gnieark’s TplBlock.
- *
- * PHP version 5
- *
- * @category Template
- * @package  TplBlock
- * @author   gnieark <gnieark@tinad.fr>
- * @link     https://blog-du-grouik.tinad.fr
- * @license  GNU General Public License V3
- * @link     https://github.com/gnieark/tplBlock/
- */
-namespace TplBlock;
 
 /**
  * The TplBlock class.
