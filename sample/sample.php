@@ -12,8 +12,6 @@
  */
 require_once __DIR__."/../autoload.php";
 
-use TplBlock\TplBlock;
-
 const PRIMES = [ 1, 2, 3, 5, 7, 11 ];
 
 /**
