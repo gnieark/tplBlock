@@ -214,4 +214,35 @@ class TplBlockTest extends TestCase
         $this->assertContains("wpooie456",$tpl-> applyTplStr($str));
 
     }
+
+    public function testaddSubBlocsDefinitions(){
+        $model = "
+{{simpleVar}}
+<!-- BEGIN bloc -->
+{{bloc.simpleVar}}
+<!-- BEGIN bloc.subBloc -->
+{{bloc.subBloc.simpleVar}}
+<!-- END bloc.subBloc -->
+<!-- END bloc -->
+";
+        $blocsDefinitions = array(
+            "simpleVar" => "hey",
+            "bloc"  => array(
+                "simpleVar" => "Ho",
+                "subBloc"   => array(
+                    "simpleVar" => "HAAAAAA!"
+                )
+            )
+        );
+        $resultShouldBe = "
+hey
+Ho
+HAAAAAA!
+";
+       $tpl = new TplBlock();
+        $result = $tpl -> addSubBlocsDefinitions($blocsDefinitions)->applyTplStr($model);
+        $this->assertEquals($result, $resultShouldBe);
+
+
+    }
 }

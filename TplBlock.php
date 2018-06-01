@@ -172,6 +172,27 @@ class TplBlock
     }
 
     /**
+     * Automatically add subs blocs and sub sub blocs ..., and vars
+     * directly from an associative array
+     * @param $subBlocsDefinitions the associative array
+     * @return TplBlock For chaining.
+     */
+    public function addSubBlocsDefinitions(ARRAY $subBlocsDefinitions, $deleteExistingsBlocs=false)
+    {
+
+        foreach($subBlocsDefinitions as $itemKey => $itemValue){
+            if(is_array($itemValue)){
+                $subBloc = new TplBlock($itemKey);
+                $subBloc->addSubBlocsDefinitions($itemValue,$deleteExistingsBlocs);
+                $this->addSubBlock($subBloc);
+            }else{
+                $this->addVars(array($itemKey => $itemValue));
+            }
+        }
+        return $this;
+
+    }
+    /**
      * Generate the sub block regex.
      *
      * @param string $prefix   The prefix to add to the block name.

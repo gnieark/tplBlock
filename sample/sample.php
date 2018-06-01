@@ -2,7 +2,7 @@
 /**
  * Gnieark’s TplBlock sample.
  *
- * PHP version 5
+ * PHP version 5 or 7
  *
  * @category Template
  * @package  TplBlock
