@@ -177,13 +177,13 @@ class TplBlock
      * @param $subBlocsDefinitions the associative array
      * @return TplBlock For chaining.
      */
-    public function addSubBlocsDefinitions(ARRAY $subBlocsDefinitions, $deleteExistingsBlocs=false)
+    public function addSubBlocsDefinitions($subBlocsDefinitions)
     {
 
         foreach($subBlocsDefinitions as $itemKey => $itemValue){
             if(is_array($itemValue)){
                 $subBloc = new TplBlock($itemKey);
-                $subBloc->addSubBlocsDefinitions($itemValue,$deleteExistingsBlocs);
+                $subBloc->addSubBlocsDefinitions($itemValue);
                 $this->addSubBlock($subBloc);
             }else{
                 $this->addVars(array($itemKey => $itemValue));
