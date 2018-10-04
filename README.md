@@ -59,7 +59,7 @@ foreach ($data as $block){
 }
 
 //parsing:
-echo $tpl->apply_tpl_file("template.html");
+echo $tpl->applyTplFile("template.html");
 ```
 will return:
 
