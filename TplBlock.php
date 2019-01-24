@@ -171,6 +171,12 @@ class TplBlock
         return $this;
     }
 
+    public static function is_assoc($arr){
+        if(!is_array($arr)){
+            return false;
+        }
+        return array_keys($arr) !== range(0, count($arr) - 1);
+    }
     /**
      * Automatically add subs blocs and sub sub blocs ..., and vars
      * directly from an associative array
@@ -181,12 +187,25 @@ class TplBlock
     {
 
         foreach($subBlocsDefinitions as $itemKey => $itemValue){
-            if(is_array($itemValue)){
+            if(self::is_assoc($itemValue)){
+
                 $subBloc = new TplBlock($itemKey);
                 $subBloc->addSubBlocsDefinitions($itemValue);
                 $this->addSubBlock($subBloc);
+
+            }elseif(is_array($itemValue)){
+                foreach($itemValue as $subItem){
+
+                    $subBloc = new TplBlock($itemKey);
+                    $subBloc->addSubBlocsDefinitions($subItem);
+                    $this->addSubBlock($subBloc);
+                    
+                }
+
             }else{
+
                 $this->addVars(array($itemKey => $itemValue));
+
             }
         }
         return $this;

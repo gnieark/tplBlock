@@ -245,4 +245,58 @@ HAAAAAA!
 
 
     }
+    public function testaddSubBlocsDefinitions2(){
+        $model = "
+{{title}}
+<!-- BEGIN fruits -->
+{{fruits.name}}
+{{fruits.price}}
+
+<!-- END fruits -->";
+
+        $blocsDefinitions = array(
+            "title" => "Epicerie",
+            "fruits"  => array(
+                array(
+                    "name" => "banana",
+                    "price" => "2€"
+                ),
+                array(
+                    "name" => "Orange",
+                    "price" => "3€"
+                )
+
+            )
+        );
+        $resultShouldBe = "
+Epicerie
+banana
+2€
+Orange
+3€
+";
+
+       $tpl = new TplBlock();
+        $result = $tpl -> addSubBlocsDefinitions($blocsDefinitions)->applyTplStr($model);
+        $this->assertEquals($resultShouldBe,$result);
+    }
+
+    public function testis_assoc(){
+        $assocArray = array(
+            "plip"  => "bar",
+            "foo"   => "bar"
+
+        );
+
+        $nonAssocArray = array("apple", "juice","banana");
+
+        $nawak = "kjhglkgkug";
+        $nawak2 = 3;
+
+        $this->assertTrue(TplBlock::is_assoc($assocArray));
+        $this->assertFalse(TplBlock::is_assoc($nonAssocArray));
+        $this->assertFalse(TplBlock::is_assoc($nawak));
+        $this->assertFalse(TplBlock::is_assoc($nawak2));
+
+    }
 }
