@@ -32,7 +32,7 @@ require_once ("path/TplBlock.php");
 //init object
 $tpl = new TplBlock();
 //add a var
-$tpl->add_vars(array("pageTilte" => "Poke @zigazou ;)"));
+$tpl->addVars(array("pageTilte" => "Poke @zigazou ;)"));
 
 
 $data = array(
@@ -54,8 +54,8 @@ $data = array(
 //add blocks
 foreach ($data as $block){
     $tplTemplateSystem = new TplBlock("templatesystem");
-    $tplTemplateSystem -> add_vars($block);
-    $tpl->add_sub_block($tplTemplateSystem);
+    $tplTemplateSystem -> addVars($block);
+    $tpl->>addSubBlock($tplTemplateSystem);
 }
 
 //parsing:
@@ -85,12 +85,11 @@ I wrote this class for use it on others personnals projects. It's really simple.
 
 If a block ( <--BEGIN .... )is in the template, but is not called, it will be deleted.
 
-For now, class is permissive. I'll improve it to manage templating errors.
 
 # Install
 
-Use composer etc... or simply put the file TplBlock.php on your project https://raw.githubusercontent.com/gnieark/tplBlock/master/TplBlock.php
+Simply put the file TplBlock.php on your project https://raw.githubusercontent.com/gnieark/tplBlock/master/TplBlock.php and include it
 
 # Documentation
 
-See the comments on the TplBlock.php file.
+See the comments on the TplBlock.php file; the sample and the unit tests.

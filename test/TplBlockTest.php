@@ -29,10 +29,11 @@ class TplBlockTest extends TestCase
      *
      * @return void
      *
-     * @expectedException UnexpectedValueException
+     * 
      */
     public function testSendEmptyNameOnSubFunction()
     {
+        $this->expectException(UnexpectedValueException::class);
         $template    = new TplBlock();
         $subTemplate = new TplBlock();
 
@@ -110,7 +111,7 @@ class TplBlockTest extends TestCase
             ->addSubBlock(new TplBlock("bloc"))
             ->applyTplStr($model);
 
-        $this->assertContains("have", $actual);
+        $this->assertStringContainsString("have", $actual);
         $this->assertFalse(strpos("WONT", $actual));
     }
 
@@ -137,7 +138,7 @@ class TplBlockTest extends TestCase
             ->addSubBlock(new TplBlock("bloc"))
             ->applyTplStr($model);
 
-        $this->assertContains("have", $actual);
+        $this->assertStringContainsString("have", $actual);
         $this->assertFalse(strpos("WONT", $actual));
     }
 
@@ -146,10 +147,11 @@ class TplBlockTest extends TestCase
      *
      * @return void
      *
-     * @expectedException UnexpectedValueException
+     * 
      */
     public function testIfErrorOnForbiddenName()
     {
+        $this->expectException(UnexpectedValueException::class);
         new TplBlock("kjsd54 65");
     }
 
@@ -158,10 +160,11 @@ class TplBlockTest extends TestCase
      *
      * @return void
      *
-     * @expectedException UnexpectedValueException
+     * 
      */
     public function testIfErrorOnForbiddenNameAgain()
     {
+        $this->expectException(UnexpectedValueException::class);
         new TplBlock("kjsd54.5");
     }
     
@@ -177,16 +180,17 @@ class TplBlockTest extends TestCase
         ->applyTplStr("Hello {{name}}");
 
 
-        $this->assertContains("name",$resultWithoutReplace);
+        $this->assertStringContainsString("name",$resultWithoutReplace);
         $this->assertFalse(strpos("name", $resultWithReplace));
     
         
     }
     /**
      * Test if error on non consistent tpl.
-     * @expectedException UnexpectedValueException
+     * 
      */
     public function testNonConsistentTemplate(){
+        $this->expectException(UnexpectedValueException::class);
         $str = "
         Bhah blah wpooie456
         <!-- BEGIN bloc -->
@@ -211,7 +215,7 @@ class TplBlockTest extends TestCase
         <!-- END blocTwo -->";
         $tpl = new TplBlock();
         $tpl-> dontStrictMode();
-        $this->assertContains("wpooie456",$tpl-> applyTplStr($str));
+        $this->assertStringContainsString("wpooie456",$tpl-> applyTplStr($str));
 
     }
 
