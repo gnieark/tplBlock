@@ -1,0 +1,44 @@
+name: PHPUnit Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: [7.4, 8.0, 8.1, 8.2, 8.4]
+        include:
+          - php-version: 7.4
+            dependencies: "lowest"
+          - php-version: 8.4
+            dependencies: "highest"
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up PHP ${{ matrix.php-version }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        tools: composer
+        extensions: mbstring, dom, pdo
+
+    - name: Install dependencies
+      run: |
+        if [ "${{ matrix.dependencies }}" == "lowest" ]; then
+          composer update --prefer-lowest --no-progress --no-interaction
+        else
+          composer install --no-progress --no-interaction
+        fi
+
+    - name: Run PHPUnit
+      run: vendor/bin/phpunit --bootstrap autoload.php test/TplBlockTest.php
