@@ -144,7 +144,7 @@ class TplBlock
      *
      * @return TplBlock For chaining.
      */
-    public function addVars(array $vars)
+    public function addVars(array $vars) :TplBlock
     {
         $this->vars = array_merge($this->vars, $vars);
         return $this;
@@ -157,7 +157,7 @@ class TplBlock
      *
      * @return TplBlock For chaining.
      */
-    public function addSubBlock(TplBlock $bloc)
+    public function addSubBlock(TplBlock $bloc) :TplBlock
     {
         // An unnamed block cannot be a sub block.
         if ($bloc->name === "") {
@@ -171,19 +171,21 @@ class TplBlock
         return $this;
     }
 
-    public static function is_assoc($arr){
+    public static function is_assoc($arr) :bool
+    {
         if(!is_array($arr)){
             return false;
         }
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
+    
     /**
      * Automatically add subs blocs and sub sub blocs ..., and vars
      * directly from an associative array
      * @param $subBlocsDefinitions the associative array
      * @return TplBlock For chaining.
      */
-    public function addSubBlocsDefinitions($subBlocsDefinitions)
+    public function addSubBlocsDefinitions($subBlocsDefinitions):TplBlock
     {
 
         foreach($subBlocsDefinitions as $itemKey => $itemValue){
@@ -219,7 +221,7 @@ class TplBlock
      *
      * @return string The regex.
      */
-    private function subBlockRegex($prefix, $blocName)
+    private function subBlockRegex(string $prefix, string $blocName) :string
     {
         return '/'
              . self::BLOCKSTARTSTART
@@ -243,7 +245,7 @@ class TplBlock
      *
      * @return string The processed output.
      */
-    public function applyTplStr($str, $subBlocsPath = "")
+    public function applyTplStr(string $str, string $subBlocsPath = ""):string
     {
         // Replace all simple vars.
         $prefix = $subBlocsPath === "" ? "" : $subBlocsPath . ".";
@@ -305,7 +307,7 @@ class TplBlock
      *
      * @return string The processed output.
      */
-    public function applyTplFile($file)
+    public function applyTplFile(string $file) :string
     {
         if (! $tplStr = file_get_contents($file)) {
             throw new \UnexpectedValueException("Cannot read given file $file");
@@ -319,7 +321,7 @@ class TplBlock
      *
      * @return TplBlock For chaining.
      */
-    public function doTrim()
+    public function doTrim() :TplBlock
     {
         $this->trim = true;
         return $this;
@@ -330,7 +332,7 @@ class TplBlock
      *
      * @return TplBlock For chaining.
      */
-    public function dontTrim()
+    public function dontTrim() :TplBlock
     {
         $this->trim = false;
         return $this;
@@ -341,7 +343,7 @@ class TplBlock
      *
      * @return TplBlock For chaining.
      */
-    public function doReplaceNonGivenVars()
+    public function doReplaceNonGivenVars() :TplBlock
     {
       $this->replaceNonGivenVars = true;
       return $this;
@@ -353,7 +355,7 @@ class TplBlock
      *
      * @return TplBlock For chaining.
      */
-    public function dontReplaceNonGivenVars()
+    public function dontReplaceNonGivenVars() :TplBlock
     {
       $this->replaceNonGivenVars = false;
       return $this;
@@ -366,7 +368,7 @@ class TplBlock
      * 
      * @return TplBlock For chaining.
      */
-    public function doStrictMode()
+    public function doStrictMode() :TplBlock
     {
         $this->strictMode = true;
         return $this;
@@ -378,7 +380,8 @@ class TplBlock
      * 
      * @return TplBlock For chaining.
      */
-    public function dontStrictMode(){
+    public function dontStrictMode() :TplBlock
+    {
         $this->strictMode = false;
         return $this;
 

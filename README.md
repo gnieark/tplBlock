@@ -2,7 +2,6 @@
 
 A very simple PHP template class
 
-[![Build Status](https://travis-ci.org/gnieark/tplBlock.svg?branch=master)](https://travis-ci.org/gnieark/tplBlock)
 
 # Sample
 
