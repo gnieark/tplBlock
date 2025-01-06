@@ -41,4 +41,4 @@ jobs:
         fi
 
     - name: Run PHPUnit
-      run: vendor/bin/phpunit --bootstrap autoload.php test/TplBlockTest.php
+      run: vendor/bin/phpunit test/TplBlockTest.php
