@@ -1,0 +1,22 @@
+{
+    "name": "gnieark/tplblock",
+    "description": "A simple PHP templating library",
+    "type": "library",
+    "require": {
+        "php": ">=7.4",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "files": ["TplBlock.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TplBlock\\Tests\\": "test/"
+        }
+    },
+    "minimum-stability": "stable",
+    "license": "MIT"
+}

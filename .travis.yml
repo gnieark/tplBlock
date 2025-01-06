@@ -1,6 +1,0 @@
-language: php
-php:
-  - '7.2'
-  - '7.3'
-script:
-- phpunit --bootstrap autoload.php test/TplBlockTest.php
